@@ -2,6 +2,7 @@ import express, { json, urlencoded } from 'express';
 import errorhandler from 'errorhandler';
 import { config } from 'dotenv';
 import logger from 'morgan';
+import debug from 'debug';
 import cors from 'cors';
 
 config();
@@ -9,6 +10,7 @@ config();
 const { PORT = 3000, NODE_ENV } = process.env;
 
 const isProduction = NODE_ENV === 'production';
+const log = debug('dev');
 const app = express();
 
 app.use(logger('dev'));
@@ -36,32 +38,38 @@ app.use((req, res, next) => {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-  app.use(function(err, req, res, next) {
-      log(err.stack);
+  app.use((err, req, res, next) => {
+    log(err.stack);
 
-      res.status(err.status || 500);
+    if (res.headersSent) {
+      return next(err);
+    }
 
-      res.json({
-          errors: {
-              message: err.message,
-              error: err
-          }
-      });
+    res.status(err.status || 500);
+
+    res.json({
+      errors: {
+        message: err.message,
+        error: err
+      }
+    });
   });
 }
 
 // production error handler
 // no stack traces leaked to user
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
   res.status(err.status || 500);
+
   res.json({
-      errors: {
-          message: err.message,
-          error: {}
-      }
+    errors: {
+      message: err.message
+    }
   });
 });
 
-app.listen(PORT, () =>
-  console.log(`App listening on port ${PORT}!`)
-);
+app.listen(PORT, () => log(`App listening on port ${PORT}!`));
