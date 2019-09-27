@@ -4,10 +4,13 @@ import { config } from 'dotenv';
 import logger from 'morgan';
 import debug from 'debug';
 import cors from 'cors';
+import YAML from 'yamljs';
+import path from 'path';
+import swaggerUI from 'swagger-ui-express';
 
 config();
 
-const { PORT = 3000, NODE_ENV } = process.env;
+const { PORT = 3000, NODE_ENV, SERVER_URL } = process.env;
 
 const isProduction = NODE_ENV === 'production';
 const log = debug('dev');
@@ -25,6 +28,12 @@ if (!isProduction) {
 app.get('/', (req, res) => {
   res.status(200).send('Welcome to the Star Wars API!');
 });
+
+const documentation = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
+documentation.servers[0].url = SERVER_URL;
+
+// setup swagger documentation
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(documentation));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -73,3 +82,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => log(`App listening on port ${PORT}!`));
+
+export default app;
