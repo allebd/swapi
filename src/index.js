@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import express, { json, urlencoded } from 'express';
 import errorhandler from 'errorhandler';
 import { config } from 'dotenv';
@@ -7,6 +8,7 @@ import cors from 'cors';
 import YAML from 'yamljs';
 import path from 'path';
 import swaggerUI from 'swagger-ui-express';
+import routes from './routes';
 
 config();
 
@@ -25,8 +27,8 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-app.get('/', (req, res) => {
-  res.status(200).send('Welcome to the Star Wars API!');
+app.get('/', (request, response) => {
+  response.status(200).send('Welcome to the Star Wars API!');
 });
 
 const documentation = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
@@ -35,8 +37,10 @@ documentation.servers[0].url = SERVER_URL;
 // setup swagger documentation
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(documentation));
 
+app.use('/api/v1', routes);
+
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
+app.use((request, response, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -47,16 +51,16 @@ app.use((req, res, next) => {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-  app.use((err, req, res, next) => {
+  app.use((err, request, response, next) => {
     log(err.stack);
 
-    if (res.headersSent) {
+    if (response.headersSent) {
       return next(err);
     }
 
-    res.status(err.status || 500);
+    response.status(err.status || 500);
 
-    res.json({
+    response.json({
       errors: {
         message: err.message,
         error: err
@@ -67,14 +71,14 @@ if (!isProduction) {
 
 // production error handler
 // no stack traces leaked to user
-app.use((err, req, res, next) => {
-  if (res.headersSent) {
+app.use((err, request, response, next) => {
+  if (response.headersSent) {
     return next(err);
   }
 
-  res.status(err.status || 500);
+  response.status(err.status || 500);
 
-  res.json({
+  response.json({
     errors: {
       message: err.message
     }
