@@ -1,4 +1,3 @@
-  
 openapi: 3.0.0
 info:
   title: SWAPI
@@ -20,6 +19,8 @@ servers:
 tags:
 - name: Home
   description: To get home page
+- name: Movies
+  description: Movie routes
 
 paths:
   /: 
@@ -32,8 +33,14 @@ paths:
           description: request successful
         404:
           description: Not Found
-      security:
-      - token: []
+  /api/v1/movies: 
+    get:
+      tags:
+        - Movies
+      summary: View all movies
+      responses:
+        200:
+          description: request successful
 
 components:
   schemas:
@@ -45,9 +52,3 @@ components:
         message:
           type: string
           example: "Welcome to the Star Wars API!"
-  
-  securitySchemes:
-    token:
-      type: apiKey
-      in: header
-      name: authorization
