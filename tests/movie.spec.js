@@ -9,7 +9,7 @@ const MOVIES_URL = `${BASE_URL}/movies`;
 
 describe('MOVIE TEST', () => {
   describe('GET ALL MOVIES TEST', () => {
-    it('its expected to return a list on all movies found', (done) => {
+    it('should return a list on all movies found', (done) => {
       chai.request(server)
         .get(`${MOVIES_URL}`)
         .end((error, response) => {

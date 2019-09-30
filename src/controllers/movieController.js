@@ -1,7 +1,7 @@
 import helpers from '../helpers';
 import services from '../services';
 
-const { responseMessage } = helpers;
+const { responseHelper } = helpers;
 const { movieService: { findMovies } } = services;
 
 /**
@@ -12,7 +12,7 @@ const { movieService: { findMovies } } = services;
  */
 const getMovies = async (request, response) => {
   const movies = await findMovies();
-  return responseMessage(response, 200, { movies });
+  return responseHelper(response, 200, { movies });
 };
 
 export default { getMovies };
