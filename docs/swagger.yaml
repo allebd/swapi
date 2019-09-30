@@ -21,6 +21,8 @@ tags:
   description: To get home page
 - name: Movies
   description: Movie routes
+- name: Characters
+  description: Character routes
 
 paths:
   /: 
@@ -31,6 +33,10 @@ paths:
       responses:
         200:
           description: request successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/home"
         404:
           description: Not Found
   /api/v1/movies: 
@@ -40,12 +46,106 @@ paths:
       summary: View all movies
       responses:
         200:
-          description: request successful
+          description: successfully fetched movies
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
+                          
+  /api/v1/movie/{episodeId}/characters:
+    get:
+      tags:
+        - Characters
+      summary: fetches characters with filters
+      parameters:
+        - name: episodeId
+          in: path
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: order
+          in: query
+          schema:
+            type: string
+        - name: filter
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: successfully fetched character
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: characters successfully returned
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      content:
+                      properties:
+                        movieCharacters:
+                          type: array
+                        metadata:
+                          type: object
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: query field
+                        message:
+                          type: string
+                          example: query field cannot be empty
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: page not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
 
 components:
   schemas:
-    token:
-      type: string
     home:
       type: object
       properties:

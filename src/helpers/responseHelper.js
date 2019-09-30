@@ -5,8 +5,8 @@
  * @param {object} payload object to be returned
  * @returns {json} json
  */
-const responseMessage = async (response, statusCode, payload) => response.status(statusCode).json({
+const responseHelper = async (response, statusCode, payload) => response.status(statusCode).json({
   ...payload
 });
 
-export default responseMessage;
+export default responseHelper;

@@ -3,7 +3,7 @@
  * @param {function} controller
  * @returns {object} Server error response
  */
-const tryCatchHandler = controller => async (req, res, next) => {
+const tryCatchHelper = controller => async (req, res, next) => {
   try {
     await controller(req, res);
   } catch (err) {
@@ -11,4 +11,4 @@ const tryCatchHandler = controller => async (req, res, next) => {
   }
 };
 
-export default tryCatchHandler;
+export default tryCatchHelper;
