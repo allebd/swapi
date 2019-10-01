@@ -14,4 +14,18 @@ const countComment = async (movieId) => {
   return comment;
 };
 
-export default { countComment };
+/**
+ * Creates a comment in the database
+ * @param {string} movieId
+ * @param {string} commentBody
+ * @param {string} publicIp
+ * @returns {object} a user object
+ */
+const createComment = async (movieId, commentBody, publicIp) => {
+  const createdComment = await Comment.create({
+    movieId, commentBody, publicIp
+  });
+  return createdComment;
+};
+
+export default { countComment, createComment };

@@ -1,14 +1,15 @@
 import { check, param, query } from 'express-validator';
 
 /**
+   * @param {String} field
    * @returns {Object} - Express-validator
    */
-const isValidComment = () => check('commentBody')
+const isValidComment = field => check(field)
   .exists()
-  .withMessage('commentBody is a required field')
+  .withMessage(`${field} is a required field`)
   .not()
   .isEmpty({ ignore_whitespace: true })
-  .withMessage('commentBody cannot be empty')
+  .withMessage(`${field} cannot be empty`)
   .isLength({ max: 500 })
   .withMessage('maximum allowed characters is 500');
 

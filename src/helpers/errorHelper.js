@@ -49,12 +49,8 @@ const error404 = (request, response, next) => {
    * @param {Function} next - Express next middleware function
    * @return {Object} - Express response object
    */
-const developmentError = (error, request, response, next) => {
+const developmentError = (error, request, response) => {
   log(error.stack);
-
-  if (response.headersSent) {
-    return next(error);
-  }
 
   response.status(error.status || 500);
 
@@ -74,11 +70,7 @@ const developmentError = (error, request, response, next) => {
    * @param {Function} next - Express next middleware function
    * @return {Object} - Express response object
    */
-const productionError = (error, request, response, next) => {
-  if (response.headersSent) {
-    return next(error);
-  }
-
+const productionError = (error, request, response) => {
   response.status(error.status || 500);
 
   response.json({

@@ -36,7 +36,7 @@ const getCharacters = async (request, response) => {
   const charactersFilter = queryFilter(characters, sort, order, filter);
   const movieCharacters = characterExtract(charactersFilter);
   const metadata = getMetadata(movieCharacters);
-  return responseHelper(response, 200, { movieCharacters, metadata });
+  return responseHelper(response, 200, { metadata, movieCharacters });
 };
 
 export default { getCharacters };

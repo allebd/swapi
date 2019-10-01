@@ -9,7 +9,7 @@ const CHARACTERS_VALID_URL = `${BASE_URL}/movie/1/characters`;
 const CHARACTERS_INVALID_URL = `${BASE_URL}/movie/kk/characters`;
 const CHARACTERS_NOT_FOUND_URL = `${BASE_URL}/movie/10000/characters`;
 
-describe('MOVIE TEST', () => {
+describe('CHARACTER TEST', () => {
   describe('GET ALL MOVIE CHARACTERS', () => {
     it('should return an error response if the episode id provided is not an integer', (done) => {
       chai.request(server)
