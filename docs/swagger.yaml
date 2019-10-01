@@ -15,6 +15,8 @@ externalDocs:
 servers:
 - url: /api/v1
   description: Localhost
+- url: https://swapi-allebd.herokuapp.com/api/v1
+  description: Heroku Production deployment
 
 tags:
 - name: Home
@@ -23,6 +25,8 @@ tags:
   description: Movie routes
 - name: Characters
   description: Character routes
+- name: Comments
+  description: Comment routes
 
 paths:
   /: 
@@ -39,7 +43,7 @@ paths:
                 $ref: "#/components/schemas/home"
         404:
           description: Not Found
-  /api/v1/movies: 
+  /movies: 
     get:
       tags:
         - Movies
@@ -51,6 +55,27 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  movies:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: A New Hope
+                        episodeId:
+                          type: integer
+                          example: 4
+                        openingCrawl:
+                          type: string
+                          example: Long lorem ipsum Long lorem ipsumLong lorem ipsumLong lorem ipsum
+                        releaseDate:
+                          type: string
+                          example: '1977-05-25'
+                        commentCount:
+                          type: integer
+                          example: 15
         500:
           description: server error
           content:
@@ -62,7 +87,7 @@ paths:
                     type: string
                     example: error occurred
                           
-  /api/v1/movie/{episodeId}/characters:
+  /movie/{episodeId}/characters:
     get:
       tags:
         - Characters
@@ -70,6 +95,7 @@ paths:
       parameters:
         - name: episodeId
           in: path
+          required: true
           schema:
             type: integer
         - name: sort
@@ -86,25 +112,53 @@ paths:
             type: string
       responses:
         200:
-          description: successfully fetched character
+          description: successfully fetched characters
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: characters successfully returned
-                  data:
+                  metadata:
+                    type: object
+                    properties:
+                      totalNumberOfCharacters:
+                        type: integer
+                        example: 1
+                      totalHeightInCm:
+                        type: string
+                        example: 315cm
+                      totalHeightInFeetInches:
+                        type: string
+                        example: 10ft and 4.02 inches
+                  movieCharacters:
                     type: array
                     items:
                       type: object
-                      content:
                       properties:
-                        movieCharacters:
-                          type: array
-                        metadata:
-                          type: object
+                        name:
+                          type: string
+                          example: Leia Organa
+                        height:
+                          type: string
+                          example: 150
+                        mass:
+                          type: string
+                          example: 49
+                        hairColor:
+                          type: string
+                          example: brown
+                        skinColor:
+                          type: string
+                          example: light
+                        eyeColor:
+                          type: string
+                          example: brown
+                        birthYear:
+                          type: string
+                          example: 19BBY
+                        gender:
+                          type: string
+                          example: female
         400:
           description: bad request
           content:
@@ -133,6 +187,93 @@ paths:
                   error:
                     type: string
                     example: page not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
+  /movie/{episodeId}/comments:
+    post:
+      tags:
+        - Comments
+      summary: Creates a comment
+      description: Post a comment on a movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                commentBody:
+                  type: string
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        201:
+          description: comment successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comment:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 'a70fa0dc-a631-49e4-a4ae-cde192bb7e95'
+                      movieId:
+                        type: integer
+                        example: 1
+                      commentBody:
+                        type: string
+                        example: I really love this movie
+                      publicIp:
+                        type: string
+                        example: '127:0:0:1'
+                      createdAt:
+                        type: string
+                        example: '2019-08-04T14:17:58.518Z'
+                      updatedAt:
+                        type: string
+                        example: '2019-08-05T14:17:58.518Z'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: commentBody
+                        message:
+                          type: string
+                          example: commentBody cannot be empty
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: movie not found
         500:
           description: server error
           content:
