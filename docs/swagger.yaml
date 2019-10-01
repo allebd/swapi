@@ -284,6 +284,68 @@ paths:
                   error:
                     type: string
                     example: error occurred
+    get:
+      tags:
+        - Comments
+      summary: Gets all comments
+      description: Gets all comments
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        201:
+          description: comment successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 'a70fa0dc-a631-49e4-a4ae-cde192bb7e95'
+                        movieId:
+                          type: integer
+                          example: 1
+                        commentBody:
+                          type: string
+                          example: I really love this movie
+                        publicIp:
+                          type: string
+                          example: '127:0:0:1'
+                        createdAt:
+                          type: string
+                          example: '2019-08-04T14:17:58.518Z'
+                        updatedAt:
+                          type: string
+                          example: '2019-08-05T14:17:58.518Z'
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: movie not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
 
 components:
   schemas:

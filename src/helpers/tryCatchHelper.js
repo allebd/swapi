@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /**
  * @name tryCatchHandler
  * @param {function} controller
