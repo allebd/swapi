@@ -28,4 +28,17 @@ const createComment = async (movieId, commentBody, publicIp) => {
   return createdComment;
 };
 
-export default { countComment, createComment };
+/**
+ * Finds all comment from the database by novel id
+ * @param {string} movieId
+ * @returns {object} a comment object
+ */
+const findComments = async (movieId) => {
+  const comment = await Comment.findAll({
+    where: { movieId },
+    order: [['createdAt', 'DESC']]
+  });
+  return comment;
+};
+
+export default { countComment, createComment, findComments };

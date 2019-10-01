@@ -4,7 +4,7 @@ import services from '../services';
 const { responseHelper } = helpers;
 const {
   commentService: {
-    createComment
+    createComment, findComments
   },
   movieService: { findMovie }
 } = services;
@@ -29,4 +29,20 @@ const postComment = async (request, response) => {
   return responseHelper(response, 201, { comment });
 };
 
-export default { postComment };
+/**
+ * @description Gets all comments for a movie
+ * @param {object} request
+ * @param {object} response
+ * @returns {json} - json
+ */
+const getComments = async (request, response) => {
+  const { episodeId } = request.params;
+  const movie = await findMovie(episodeId);
+  if (!movie) {
+    return responseHelper(response, 404, { error: 'movie not found' });
+  }
+  const comments = await findComments(episodeId);
+  return responseHelper(response, 200, { comments });
+};
+
+export default { postComment, getComments };

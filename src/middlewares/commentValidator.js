@@ -12,6 +12,10 @@ const commentValidator = {
     isValidIntParam('episodeId'),
     isValidComment('commentBody'),
     validatorError
+  ],
+  getCommentValidator: [
+    isValidIntParam('episodeId'),
+    validatorError
   ]
 };
 

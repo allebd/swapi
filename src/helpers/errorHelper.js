@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { validationResult } from 'express-validator';
 import debug from 'debug';
 import responseHelper from './responseHelper';
