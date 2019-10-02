@@ -73,7 +73,7 @@ API Documentation was generated with [Swagger](https://swapi-allebd.herokuapp.co
   npm start
 ```
 
-* You se `http://localhost:3000` as base url for endpoints
+* Use `http://localhost:3000` as base url for endpoints
 
 ### Endpoints
 
