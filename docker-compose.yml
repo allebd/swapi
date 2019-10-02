@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  dev:
+    container_name: swapi
+    image: swapi
+    ports:
+      - 80:3000
+    environment:
+      PORT: 3000
+      DATABASE_URL_DEV: postgres://postgres:pgpassword@db:5432/swapi_db
+    command: npm run dev
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    ports:
+      - 35432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: swapi_db
