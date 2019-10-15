@@ -5,11 +5,13 @@ services:
     container_name: swapi
     image: swapi
     ports:
-      - 80:3000
+      - 54321:3000
+    env_file:
+      - ./.env
     environment:
       PORT: 3000
-      DATABASE_URL_DEV: postgres://postgres:pgpassword@db:5432/swapi_db
-    command: npm run dev
+      DATABASE_URL_DEV: ${DOCKER_DB_URL}
+    command: sh -c "npm run db:ready && npm run dev"
     depends_on:
       - db
 
@@ -17,7 +19,9 @@ services:
     image: postgres
     ports:
       - 35432:5432
+    env_file:
+      - ./.env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: pgpassword
-      POSTGRES_DB: swapi_db
+      POSTGRES_USER: ${DOCKER_DB_USER}
+      POSTGRES_PASSWORD: ${DOCKER_DB_PASS}
+      POSTGRES_DB: ${DOCKER_DB}
