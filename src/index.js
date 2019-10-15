@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import '@babel/polyfill';
 import express, { json, urlencoded } from 'express';
 import { config } from 'dotenv';
@@ -12,7 +13,7 @@ import routes from './routes';
 
 config();
 
-const { PORT = 3000, NODE_ENV, SERVER_URL } = process.env;
+const { PORT = 3000, NODE_ENV } = process.env;
 const { errorHelper: { error404, developmentError, productionError } } = helpers;
 const isProduction = NODE_ENV === 'production';
 const log = debug('dev');
@@ -28,7 +29,6 @@ app.get('/', (request, response) => {
 });
 
 const documentation = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
-documentation.servers[0].url = SERVER_URL;
 
 // setup swagger documentation
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(documentation));
