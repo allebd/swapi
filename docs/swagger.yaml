@@ -13,14 +13,10 @@ externalDocs:
   url: https://github.com/allebd/swapi
 
 servers:
-- url: /api/v1
-  description: Localhost
 - url: https://swapi-allebd.herokuapp.com/api/v1
-  description: Heroku Production deployment
+  description: Heroku deployment
 
 tags:
-- name: Home
-  description: To get home page
 - name: Movies
   description: Movie routes
 - name: Characters
@@ -29,20 +25,6 @@ tags:
   description: Comment routes
 
 paths:
-  /: 
-    get:
-      tags:
-        - Home
-      summary: Home page
-      responses:
-        200:
-          description: request successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/home"
-        404:
-          description: Not Found
   /movies: 
     get:
       tags:
@@ -346,12 +328,3 @@ paths:
                   error:
                     type: string
                     example: error occurred
-
-components:
-  schemas:
-    home:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Welcome to the Star Wars API!"

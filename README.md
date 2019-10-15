@@ -56,6 +56,11 @@ API Documentation was generated with [Swagger](https://swapi-allebd.herokuapp.co
 ### Clone
 
 * Clone this project to your local machine `https://github.com/allebd/swapi.git`
+  > Run the command below
+
+```shell
+   git clone https://github.com/allebd/swapi.git
+```
 
 ### Setup
 
@@ -66,8 +71,24 @@ API Documentation was generated with [Swagger](https://swapi-allebd.herokuapp.co
    npm install
 ```
 
+* Create a .env file similar to the .env.sample file
+
+* Create your database
+  > Run the command below
+
+```shell
+  npx sequelize db:create
+```
+
+* Add tables to database
+  > Run the command below
+
+```shell
+  npm run db:ready
+```
+
 * Start your node server
-  > run the command below
+  > Run the command below
 
 ```shell
   npm start
