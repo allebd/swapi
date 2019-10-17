@@ -74,9 +74,9 @@ describe('COMMENT TEST', () => {
         .end((error, response) => {
           expect(response).to.have.status(201);
           expect(response.body).to.be.an('object');
-          expect(response.body).to.haveOwnProperty('comment');
-          expect(response.body.comment).to.be.an('object');
-          expect(response.body.comment).to.have.keys(['id', 'movieId', 'commentBody', 'publicIp', 'createdAt', 'updatedAt']);
+          expect(response.body.data[0]).to.haveOwnProperty('comment');
+          expect(response.body.data[0].comment).to.be.an('object');
+          expect(response.body.data[0].comment).to.have.keys(['id', 'movieId', 'commentBody', 'publicIp', 'createdAt', 'updatedAt']);
           done();
         });
     });
@@ -115,7 +115,7 @@ describe('COMMENT TEST', () => {
         .get(COMMENT_VALID_URL)
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body).to.have.keys(['comments']);
+          expect(response.body.data[0]).to.have.keys(['comments']);
           done();
         });
     });

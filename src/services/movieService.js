@@ -22,7 +22,7 @@ const movieExtract = (movieResult) => Promise.all(movieResult.map(async (movie) 
     episode_id,
     release_date
   } = movie;
-  const commentCount = await countComment(episode_id);
+  const commentCount = await countComment(episode_id).catch(() => {});
 
   return {
     title,
@@ -34,10 +34,10 @@ const movieExtract = (movieResult) => Promise.all(movieResult.map(async (movie) 
 }));
 
 /**
- * @description Finds all movies
+ * @description Fetches all movies
  * @returns {object} a user object
  */
-const findMovies = async () => {
+const fetchMovies = async () => {
   const movies = await axios.get(`${FILMS_URL}`);
   const { data: { results } } = movies;
   const movieSort = sortByDate(results);
@@ -46,17 +46,12 @@ const findMovies = async () => {
 };
 
 /**
- * @description Finds a movie
+ * @description Fetches a movie
  * @param {integer} episodeId
  * @returns {object} a user object
  */
-const findMovie = async (episodeId) => {
-  let movies = null;
-  try {
-    movies = await axios.get(`${FILMS_URL}/${episodeId}`);
-  } catch (error) {
-    movies = error.response;
-  }
+const fetchMovie = async (episodeId) => {
+  const movies = await axios.get(`${FILMS_URL}/${episodeId}`).catch((error) => error.response);
   const { data, status } = movies;
   if (status === 404) {
     return undefined;
@@ -64,4 +59,4 @@ const findMovie = async (episodeId) => {
   return data;
 };
 
-export default { findMovies, findMovie };
+export default { fetchMovies, fetchMovie };

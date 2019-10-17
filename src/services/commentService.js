@@ -29,11 +29,11 @@ const createComment = async (movieId, commentBody, publicIp) => {
 };
 
 /**
- * Finds all comment from the database by novel id
+ * Fetches all comment from the database by novel id
  * @param {string} movieId
  * @returns {object} a comment object
  */
-const findComments = async (movieId) => {
+const fetchComments = async (movieId) => {
   const comment = await Comment.findAll({
     where: { movieId },
     order: [['createdAt', 'DESC']]
@@ -41,4 +41,4 @@ const findComments = async (movieId) => {
   return comment;
 };
 
-export default { countComment, createComment, findComments };
+export default { countComment, createComment, fetchComments };

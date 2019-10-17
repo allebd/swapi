@@ -4,9 +4,9 @@ import services from '../services';
 const { responseHelper } = helpers;
 const {
   commentService: {
-    createComment, findComments
+    createComment, fetchComments
   },
-  movieService: { findMovie }
+  movieService: { fetchMovie }
 } = services;
 
 /**
@@ -21,12 +21,16 @@ const postComment = async (request, response) => {
     body: { commentBody },
     ip
   } = request;
-  const movie = await findMovie(episodeId);
+  const movie = await fetchMovie(episodeId);
   if (!movie) {
     return responseHelper(response, 404, { error: 'movie not found' });
   }
   const comment = await createComment(episodeId, commentBody, ip);
-  return responseHelper(response, 201, { comment });
+  return responseHelper(response, 201, {
+    status: true,
+    message: 'comments successfully added',
+    data: [{ comment }]
+  });
 };
 
 /**
@@ -37,12 +41,16 @@ const postComment = async (request, response) => {
  */
 const getComments = async (request, response) => {
   const { episodeId } = request.params;
-  const movie = await findMovie(episodeId);
+  const movie = await fetchMovie(episodeId);
   if (!movie) {
     return responseHelper(response, 404, { error: 'movie not found' });
   }
-  const comments = await findComments(episodeId);
-  return responseHelper(response, 200, { comments });
+  const comments = await fetchComments(episodeId);
+  return responseHelper(response, 200, {
+    status: true,
+    message: 'comments successfully retrieved',
+    data: [{ comments }]
+  });
 };
 
 export default { postComment, getComments };
