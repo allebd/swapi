@@ -29,12 +29,16 @@ const createComment = async (movieId, commentBody, publicIp) => {
 };
 
 /**
- * Fetches all comment from the database by novel id
+ * Fetches all comment from the database by movie id
+ * @param {string} offset
+ * @param {string} limit
  * @param {string} movieId
  * @returns {object} a comment object
  */
-const fetchComments = async (movieId) => {
+const fetchComments = async (offset, limit, movieId) => {
   const comment = await Comment.findAll({
+    offset,
+    limit,
     where: { movieId },
     order: [['createdAt', 'DESC']]
   });

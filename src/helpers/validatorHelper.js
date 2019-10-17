@@ -58,10 +58,24 @@ const isValidFilter = field => query(field)
   .isEmpty()
   .withMessage(`${field} cannot be empty`);
 
+/**
+ * Validates integer query
+   * @param {String} field
+   * @returns {Object} - Express-validator
+   */
+const isValidInt = field => query(field)
+  .trim()
+  .not()
+  .isEmpty()
+  .withMessage(`${field} cannot be empty`)
+  .isInt()
+  .withMessage(`${field} must be an integer`);
+
 export default {
   isValidIntParam,
   isValidComment,
   isValidSort,
   isValidOrder,
-  isValidFilter
+  isValidFilter,
+  isValidInt
 };
