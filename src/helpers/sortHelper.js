@@ -38,8 +38,8 @@ const sortByString = (results, sortBy) => {
  * @param {string} sortBy
  * @returns {object} Server error response
  */
-const sortByNumber = async (results, sortBy) => {
-  const numberSort = await results.sort((a, b) => {
+const sortByNumber = (results, sortBy) => {
+  const numberSort = results.sort((a, b) => {
     const numberA = +a[sortBy];
     const numberB = +b[sortBy];
     return numberA > numberB;

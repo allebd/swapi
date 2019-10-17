@@ -2,7 +2,7 @@ import helpers from '../helpers';
 import services from '../services';
 
 const { responseHelper } = helpers;
-const { movieService: { findMovies } } = services;
+const { movieService: { fetchMovies } } = services;
 
 /**
  * @description Gets all movies
@@ -11,8 +11,12 @@ const { movieService: { findMovies } } = services;
  * @returns {json} - json
  */
 const getMovies = async (request, response) => {
-  const movies = await findMovies();
-  return responseHelper(response, 200, { movies });
+  const movies = await fetchMovies();
+  return responseHelper(response, 200, {
+    status: true,
+    message: 'movies successfully retrieved',
+    data: [{ movies }]
+  });
 };
 
 export default { getMovies };

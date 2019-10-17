@@ -38,26 +38,37 @@ paths:
               schema:
                 type: object
                 properties:
-                  movies:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: movies successfully retrieved
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        title:
-                          type: string
-                          example: A New Hope
-                        episodeId:
-                          type: integer
-                          example: 4
-                        openingCrawl:
-                          type: string
-                          example: Long lorem ipsum Long lorem ipsumLong lorem ipsumLong lorem ipsum
-                        releaseDate:
-                          type: string
-                          example: '1977-05-25'
-                        commentCount:
-                          type: integer
-                          example: 15
+                        movies:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              title:
+                                type: string
+                                example: A New Hope
+                              episodeId:
+                                type: integer
+                                example: 4
+                              openingCrawl:
+                                type: string
+                                example: Long lorem ipsum Long lorem ipsumLong lorem ipsumLong lorem ipsum
+                              releaseDate:
+                                type: string
+                                example: '1977-05-25'
+                              commentCount:
+                                type: integer
+                                example: 15
         500:
           description: server error
           content:
@@ -65,6 +76,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: error occurred
@@ -100,47 +114,79 @@ paths:
               schema:
                 type: object
                 properties:
-                  metadata:
-                    type: object
-                    properties:
-                      totalNumberOfCharacters:
-                        type: integer
-                        example: 1
-                      totalHeightInCm:
-                        type: string
-                        example: 315cm
-                      totalHeightInFeetInches:
-                        type: string
-                        example: 10ft and 4.02 inches
-                  movieCharacters:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: characters successfully retrieved
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        name:
-                          type: string
-                          example: Leia Organa
-                        height:
-                          type: string
-                          example: 150
-                        mass:
-                          type: string
-                          example: 49
-                        hairColor:
-                          type: string
-                          example: brown
-                        skinColor:
-                          type: string
-                          example: light
-                        eyeColor:
-                          type: string
-                          example: brown
-                        birthYear:
-                          type: string
-                          example: 19BBY
-                        gender:
-                          type: string
-                          example: female
+                        movieCharacters:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Leia Organa
+                              height:
+                                type: string
+                                example: 150
+                              mass:
+                                type: string
+                                example: 49
+                              hairColor:
+                                type: string
+                                example: brown
+                              skinColor:
+                                type: string
+                                example: light
+                              eyeColor:
+                                type: string
+                                example: brown
+                              birthYear:
+                                type: string
+                                example: 19BBY
+                              gender:
+                                type: string
+                                example: female
+                        metadata:
+                          type: object
+                          properties:
+                            totalNumberOfCharacters:
+                              type: integer
+                              example: 1
+                            totalHeightInCm:
+                              type: object
+                              properties:
+                                unit:
+                                  type: string
+                                  example: cm
+                                value:
+                                  type: integer
+                                  example: 315
+                                text:
+                                  type: string
+                                  example: 315cm
+                            totalHeightInFeetInches:
+                              type: object
+                              properties:
+                                unit:
+                                  type: string
+                                  example: ft
+                                value:
+                                  type: integer
+                                  example: 10
+                                text:
+                                  type: integer
+                                  example: 10ft
+                                fullText:
+                                  type: string
+                                  example: 10ft and 4.02 inches
         400:
           description: bad request
           content:
@@ -153,6 +199,9 @@ paths:
                     items:
                       type: object
                       properties:
+                        status:
+                          type: boolean
+                          example: false
                         field:
                           type: string
                           example: query field
@@ -166,6 +215,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: page not found
@@ -176,6 +228,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: error occurred
@@ -201,33 +256,46 @@ paths:
             type: integer
       responses:
         201:
-          description: comment successfully created
+          description: comment successfully added
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  comment:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        example: 'a70fa0dc-a631-49e4-a4ae-cde192bb7e95'
-                      movieId:
-                        type: integer
-                        example: 1
-                      commentBody:
-                        type: string
-                        example: I really love this movie
-                      publicIp:
-                        type: string
-                        example: '127:0:0:1'
-                      createdAt:
-                        type: string
-                        example: '2019-08-04T14:17:58.518Z'
-                      updatedAt:
-                        type: string
-                        example: '2019-08-05T14:17:58.518Z'
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: comments successfully added
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        comments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: 'a70fa0dc-a631-49e4-a4ae-cde192bb7e95'
+                              movieId:
+                                type: integer
+                                example: 1
+                              commentBody:
+                                type: string
+                                example: I really love this movie
+                              publicIp:
+                                type: string
+                                example: '127:0:0:1'
+                              createdAt:
+                                type: string
+                                example: '2019-08-04T14:17:58.518Z'
+                              updatedAt:
+                                type: string
+                                example: '2019-08-05T14:17:58.518Z'
         400:
           description: bad request
           content:
@@ -240,6 +308,9 @@ paths:
                     items:
                       type: object
                       properties:
+                        status:
+                          type: boolean
+                          example: false
                         field:
                           type: string
                           example: commentBody
@@ -253,6 +324,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: movie not found
@@ -263,6 +337,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: error occurred
@@ -285,29 +362,40 @@ paths:
               schema:
                 type: object
                 properties:
-                  comments:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: comments successfully retrieved
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
-                          type: string
-                          example: 'a70fa0dc-a631-49e4-a4ae-cde192bb7e95'
-                        movieId:
-                          type: integer
-                          example: 1
-                        commentBody:
-                          type: string
-                          example: I really love this movie
-                        publicIp:
-                          type: string
-                          example: '127:0:0:1'
-                        createdAt:
-                          type: string
-                          example: '2019-08-04T14:17:58.518Z'
-                        updatedAt:
-                          type: string
-                          example: '2019-08-05T14:17:58.518Z'
+                        comments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: 'a70fa0dc-a631-49e4-a4ae-cde192bb7e95'
+                              movieId:
+                                type: integer
+                                example: 1
+                              commentBody:
+                                type: string
+                                example: I really love this movie
+                              publicIp:
+                                type: string
+                                example: '127:0:0:1'
+                              createdAt:
+                                type: string
+                                example: '2019-08-04T14:17:58.518Z'
+                              updatedAt:
+                                type: string
+                                example: '2019-08-05T14:17:58.518Z'
         404:
           description: entity not found
           content:
@@ -315,6 +403,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: movie not found
@@ -325,6 +416,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: boolean
+                    example: false
                   error:
                     type: string
                     example: error occurred

@@ -6,6 +6,7 @@
  * @returns {json} json
  */
 const responseHelper = async (response, statusCode, payload) => response.status(statusCode).json({
+  status: false,
   ...payload
 });
 

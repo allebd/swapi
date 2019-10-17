@@ -4,25 +4,25 @@ import helpers from '../helpers';
 const { sortHelper: { sortByString, sortByNumber } } = helpers;
 
 /**
- * @description Find a character
+ * @description Fetch a character
  * @param {string} characterUrl
  * @returns {object} a user object
  */
-const findCharacter = async (characterUrl) => {
+const fetchCharacter = async (characterUrl) => {
   const character = await axios.get(`${characterUrl}`);
   const { data } = character;
   return data;
 };
 
 /**
- * @description Find all characters of a movie
+ * @description Fetches all characters of a movie
  * @param {string} movie
  * @returns {object} a user object
  */
-const findCharacters = (movie) => {
+const fetchCharacters = (movie) => {
   const { characters } = movie;
   const charactersDetails = Promise.all(characters.map(async (characterUrl) => {
-    const character = await findCharacter(characterUrl);
+    const character = await fetchCharacter(characterUrl).catch(() => {});
     return character;
   }));
   return charactersDetails;
@@ -87,23 +87,50 @@ const characterExtract = (characterResult) => (characterResult.map((character) =
 }));
 
 /**
+ * @description Gets Total Height in cm
+ * @param {object} totalHeight
+ * @param {object} unit
+ * @returns {object} an object
+ */
+const getTotalHeightInCm = (totalHeight, unit) => ({
+  unit,
+  value: totalHeight,
+  text: `${totalHeight}${unit}`
+});
+
+/**
+ * @description Gets Total Height in Feet and Inches
+ * @param {object} totalHeight
+ * @param {object} unit
+ * @returns {object} an object
+ */
+const getTotalHeightInFeetInches = (totalHeight, unit) => {
+  const totalHeightInFeet = totalHeight / 30.48;
+  const totalHeightInInches = (totalHeightInFeet % 1) * 12;
+  return {
+    unit,
+    value: totalHeightInFeet,
+    text: `${totalHeightInFeet}${unit}`,
+    fullText: `${Math.floor(totalHeightInFeet)}ft and ${totalHeightInInches.toFixed(2)} inches`
+  };
+};
+
+/**
  * @description Get Characters Metadata
  * @param {object} characters
- * @returns {object} a user object
+ * @returns {object} an object
  */
 const getMetadata = (characters) => {
   const totalNumberOfCharacters = characters.length;
   // eslint-disable-next-line max-len
   const totalHeight = characters.reduce((total, character) => total + parseInt(character.height, 10), 0);
-  const totalHeightInFeet = totalHeight / 30.48;
-  const totalHeightInInches = (totalHeightInFeet % 1) * 12;
-  const totalHeightInCm = `${totalHeight}cm`;
-  const totalHeightInFeetInches = `${Math.floor(totalHeightInFeet)}ft and ${totalHeightInInches.toFixed(2)} inches`;
+  const totalHeightInCm = getTotalHeightInCm(totalHeight, 'cm');
+  const totalHeightInFeetInches = getTotalHeightInFeetInches(totalHeight, 'ft');
   return { totalNumberOfCharacters, totalHeightInCm, totalHeightInFeetInches };
 };
 
 export default {
-  findCharacters,
+  fetchCharacters,
   queryFilter,
   characterExtract,
   getMetadata
