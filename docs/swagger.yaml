@@ -273,7 +273,7 @@ paths:
                     items:
                       type: object
                       properties:
-                        comments:
+                        comment:
                           type: array
                           items:
                             type: object
@@ -354,6 +354,14 @@ paths:
           required: true
           schema:
             type: integer
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
       responses:
         201:
           description: comment successfully created
@@ -396,6 +404,15 @@ paths:
                               updatedAt:
                                 type: string
                                 example: '2019-08-05T14:17:58.518Z'
+                        currentPage:
+                          type: string
+                          example: '1'
+                        totalPages:
+                          type: integer
+                          example: 2
+                        limit:
+                          type: string
+                          example: '10'
         404:
           description: entity not found
           content:

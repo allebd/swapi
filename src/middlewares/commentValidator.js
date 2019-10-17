@@ -3,7 +3,7 @@ import helpers from '../helpers';
 const {
   errorHelper: { validatorError },
   validatorHelper: {
-    isValidIntParam, isValidComment
+    isValidIntParam, isValidComment, isValidInt
   }
 } = helpers;
 
@@ -15,6 +15,8 @@ const commentValidator = {
   ],
   getCommentValidator: [
     isValidIntParam('episodeId'),
+    isValidInt('page').optional(),
+    isValidInt('limit').optional(),
     validatorError
   ]
 };

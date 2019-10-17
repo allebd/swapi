@@ -4,7 +4,7 @@ import services from '../services';
 const { responseHelper } = helpers;
 const {
   commentService: {
-    createComment, fetchComments
+    createComment, fetchComments, countComment
   },
   movieService: { fetchMovie }
 } = services;
@@ -40,16 +40,33 @@ const postComment = async (request, response) => {
  * @returns {json} - json
  */
 const getComments = async (request, response) => {
-  const { episodeId } = request.params;
+  const {
+    params: { episodeId },
+    query: { page = 1, limit = 10 }
+  } = request;
   const movie = await fetchMovie(episodeId);
   if (!movie) {
     return responseHelper(response, 404, { error: 'movie not found' });
   }
-  const comments = await fetchComments(episodeId);
+  const countComments = await countComment(episodeId);
+  if (!countComments) {
+    return responseHelper(response, 404, { error: 'comments not found' });
+  }
+  const pages = Math.ceil(countComments / limit);
+  if (page > pages) {
+    return responseHelper(response, 404, { error: 'page not found' });
+  }
+  const offset = limit * (page - 1);
+  const comments = await fetchComments(offset, limit, episodeId);
   return responseHelper(response, 200, {
     status: true,
     message: 'comments successfully retrieved',
-    data: [{ comments }]
+    data: [{
+      comments,
+      currentPage: page,
+      totalPages: pages,
+      limit
+    }]
   });
 };
 

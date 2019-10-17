@@ -13,9 +13,10 @@
     "test": "cross-env NODE_ENV=test npm-run-all db:ready mocha:test",
     "lint": "eslint src",
     "fix": "eslint --fix .",
-    "db:ready": "npm-run-all db:undo db:migrate",
+    "db:ready": "npm-run-all db:undo db:migrate db:seed",
     "db:migrate": "sequelize db:migrate",
     "db:undo": "sequelize db:migrate:undo:all",
+    "db:seed": "sequelize db:seed:all",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
