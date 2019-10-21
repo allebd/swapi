@@ -45,6 +45,7 @@ API Documentation was generated with [Swagger](https://swapi-allebd.herokuapp.co
 * [Mocha](https://mochajs.org/) used for setting up tests
 * [Chai](https://www.chaijs.com/) an assertion library for node and the browser that can be delightfully paired with any javascript testing framework.
 * [Docker](https://www.docker.com/) helps securely build, share and run modern applications anywhere
+* [Redis](https://redis.io/) helps to cache data for a faster response rate
 
 ## Installations
 

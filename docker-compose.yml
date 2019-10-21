@@ -14,6 +14,7 @@ services:
     command: sh -c "npm run db:ready && npm run dev"
     depends_on:
       - db
+      - cache
 
   db:
     image: postgres
@@ -25,3 +26,11 @@ services:
       POSTGRES_USER: ${DOCKER_DB_USER}
       POSTGRES_PASSWORD: ${DOCKER_DB_PASS}
       POSTGRES_DB: ${DOCKER_DB}
+
+  cache:
+    image: redis
+    env_file:
+      - ./.env
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}

@@ -1,7 +1,44 @@
+/* istanbul ignore file */
 import axios from 'axios';
 import helpers from '../helpers';
 
-const { sortHelper: { sortByString, sortByNumber } } = helpers;
+const {
+  sortHelper: {
+    sortByString,
+    sortByNumber
+  },
+  redisHelper: {
+    existsAsync,
+    getAsync,
+    setAsync
+  }
+} = helpers;
+
+/**
+ * @description Fetches a character from endpoint
+ * @param {string} characterUrl
+ * @returns {object} an object
+ */
+const fetchCharacterFromEndpoint = async (characterUrl) => {
+  const character = await axios.get(`${characterUrl}`);
+  const { data } = character;
+  await setAsync(`character:${characterUrl}`, JSON.stringify(data));
+  return data;
+};
+
+/**
+ * @description Fetches a character from cache
+ * @param {string} characterUrl
+ * @returns {object} an object
+ */
+const fetchCharacterFromCache = async (characterUrl) => {
+  const character = await existsAsync(`character:${characterUrl}`);
+  if (character) {
+    const cachedCharacter = await getAsync(`character:${characterUrl}`);
+    return JSON.parse(cachedCharacter);
+  }
+  return undefined;
+};
 
 /**
  * @description Fetch a character
@@ -9,9 +46,11 @@ const { sortHelper: { sortByString, sortByNumber } } = helpers;
  * @returns {object} a user object
  */
 const fetchCharacter = async (characterUrl) => {
-  const character = await axios.get(`${characterUrl}`);
-  const { data } = character;
-  return data;
+  let characterResult = await fetchCharacterFromCache(characterUrl);
+  if (!characterResult) {
+    characterResult = await fetchCharacterFromEndpoint(characterUrl);
+  }
+  return characterResult;
 };
 
 /**

@@ -12,7 +12,7 @@ const BASE_URL = '/api/v1';
 const COMMENT_VALID_URL = `${BASE_URL}/movie/1/comments`;
 const NO_COMMENT_VALID_URL = `${BASE_URL}/movie/5/comments`;
 const COMMENT_INVALID_URL = `${BASE_URL}/movie/kk/comments`;
-const COMMENT_NOT_FOUND_URL = `${BASE_URL}/movie/10000/comments`;
+const COMMENT_NOT_FOUND_URL = `${BASE_URL}/movie/1000000/comments`;
 
 describe('COMMENT TEST', () => {
   describe('CREATE A COMMENT FOR A MOVIE', () => {

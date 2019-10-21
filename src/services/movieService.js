@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { config } from 'dotenv';
 import axios from 'axios';
 import commentService from './commentService';
@@ -8,7 +9,14 @@ config();
 const { SWAPI_URL } = process.env;
 const FILMS_URL = `${SWAPI_URL}/films`;
 const { countComment } = commentService;
-const { sortHelper: { sortByDate } } = helpers;
+const {
+  sortHelper: { sortByDate },
+  redisHelper: {
+    existsAsync,
+    getAsync,
+    setAsync
+  }
+} = helpers;
 
 /**
  * @description Extracts movie details for required response
@@ -34,29 +42,84 @@ const movieExtract = (movieResult) => Promise.all(movieResult.map(async (movie) 
 }));
 
 /**
- * @description Fetches all movies
- * @returns {object} a user object
+ * @description Fetches movies from endpoint
+ * @returns {object} an object
  */
-const fetchMovies = async () => {
+const fetchMoviesFromEndpoint = async () => {
   const movies = await axios.get(`${FILMS_URL}`);
   const { data: { results } } = movies;
-  const movieSort = sortByDate(results);
+  await setAsync(`movies:${FILMS_URL}`, JSON.stringify(results));
+  return results;
+};
 
+/**
+ * @description Fetches movies from cache
+ * @returns {object} an object
+ */
+const fetchMoviesFromCache = async () => {
+  const movies = await existsAsync(`movies:${FILMS_URL}`);
+  if (movies) {
+    const cachedMovies = await getAsync(`movies:${FILMS_URL}`);
+    return JSON.parse(cachedMovies);
+  }
+  return undefined;
+};
+
+/**
+ * @description Fetches all movies
+ * @returns {object} an object
+ */
+const fetchMovies = async () => {
+  let movieResults = await fetchMoviesFromCache();
+  if (!movieResults) {
+    movieResults = await fetchMoviesFromEndpoint();
+  }
+  const movieSort = sortByDate(movieResults);
   return movieExtract(movieSort);
+};
+
+/**
+ * @description Fetches a movie from endpoint
+ * @param {integer} episodeId
+ * @returns {object} an object
+ */
+const fetchMovieFromEndpoint = async (episodeId) => {
+  const movieUrl = `${FILMS_URL}/${episodeId}`;
+  const movie = await axios.get(`${movieUrl}`).catch((error) => error.response);
+  const { data, status } = movie;
+  if (status === 404) {
+    return undefined;
+  }
+  await setAsync(`movie:${movieUrl}`, JSON.stringify(data));
+  return data;
+};
+
+/**
+ * @description Fetches a movie from cache
+ * @param {integer} episodeId
+ * @returns {object} an object
+ */
+const fetchMovieFromCache = async (episodeId) => {
+  const movieUrl = `${FILMS_URL}/${episodeId}`;
+  const movie = await existsAsync(`movie:${movieUrl}`);
+  if (movie) {
+    const cachedMovie = await getAsync(`movie:${movieUrl}`);
+    return JSON.parse(cachedMovie);
+  }
+  return undefined;
 };
 
 /**
  * @description Fetches a movie
  * @param {integer} episodeId
- * @returns {object} a user object
+ * @returns {object} an object
  */
 const fetchMovie = async (episodeId) => {
-  const movies = await axios.get(`${FILMS_URL}/${episodeId}`).catch((error) => error.response);
-  const { data, status } = movies;
-  if (status === 404) {
-    return undefined;
+  let movieResult = await fetchMovieFromCache(episodeId);
+  if (!movieResult) {
+    movieResult = await fetchMovieFromEndpoint(episodeId);
   }
-  return data;
+  return movieResult;
 };
 
 export default { fetchMovies, fetchMovie };
