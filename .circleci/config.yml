@@ -4,6 +4,7 @@ jobs: # a collection of steps
     working_directory: ~/swapi # directory where steps will run
     docker: # run the steps with Docker
       - image: circleci/node:10.16.3 # ...with this image as the primary container; this is where all `steps` will run
+      - image: circleci/redis:4.0.9-alpine
       - image: circleci/postgres:11-alpine-ram
         environment:
           POSTGRES_USER: postgres
