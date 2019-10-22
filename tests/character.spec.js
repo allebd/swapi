@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 const BASE_URL = '/api/v1';
 const CHARACTERS_VALID_URL = `${BASE_URL}/movie/1/characters`;
 const CHARACTERS_INVALID_URL = `${BASE_URL}/movie/kk/characters`;
-const CHARACTERS_NOT_FOUND_URL = `${BASE_URL}/movie/1000000/characters`;
+const CHARACTERS_NOT_FOUND_URL = `${BASE_URL}/movie/10009/characters`;
 
 describe('CHARACTER TEST', () => {
   describe('GET ALL MOVIE CHARACTERS', () => {
