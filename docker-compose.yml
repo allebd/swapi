@@ -32,5 +32,4 @@ services:
     env_file:
       - ./.env
     environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
+      REDIS_URL: ${REDIS_URL}

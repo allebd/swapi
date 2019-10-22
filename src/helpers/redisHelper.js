@@ -4,10 +4,9 @@ import { promisify } from 'util';
 
 config();
 
-const { REDIS_HOST, REDIS_PORT } = process.env;
+const { REDIS_URL } = process.env;
 const redisClient = redis.createClient({
-  port: REDIS_PORT,
-  host: REDIS_HOST,
+  url: REDIS_URL,
 });
 
 export default {
