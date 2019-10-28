@@ -29,7 +29,7 @@ const postComment = async (request, response) => {
   return responseHelper(response, 201, {
     status: true,
     message: 'comments successfully added',
-    data: [{ comment }]
+    data: { comment }
   });
 };
 

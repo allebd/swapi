@@ -15,7 +15,7 @@ const getMovies = async (request, response) => {
   return responseHelper(response, 200, {
     status: true,
     message: 'movies successfully retrieved',
-    data: [{ movies }]
+    data: { movies }
   });
 };
 
