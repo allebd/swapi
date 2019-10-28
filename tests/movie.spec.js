@@ -14,7 +14,7 @@ describe('MOVIE TEST', () => {
         .get(`${MOVIES_URL}`)
         .end((error, response) => {
           expect(response, 'must have a status 200 ok').to.have.status(200);
-          expect(response.body.data[0]).to.be.an('object');
+          expect(response.body.data).to.be.an('object');
           done();
         });
     });
