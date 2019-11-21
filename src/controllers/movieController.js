@@ -13,7 +13,6 @@ const { movieService: { fetchMovies } } = services;
 const getMovies = async (request, response) => {
   const movies = await fetchMovies();
   return responseHelper(response, 200, {
-    status: true,
     message: 'movies successfully retrieved',
     data: { movies }
   });
