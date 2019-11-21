@@ -27,7 +27,6 @@ const postComment = async (request, response) => {
   }
   const comment = await createComment(episodeId, commentBody, ip);
   return responseHelper(response, 201, {
-    status: true,
     message: 'comments successfully added',
     data: { comment }
   });
@@ -59,14 +58,13 @@ const getComments = async (request, response) => {
   const offset = limit * (page - 1);
   const comments = await fetchComments(offset, limit, episodeId);
   return responseHelper(response, 200, {
-    status: true,
     message: 'comments successfully retrieved',
-    data: [{
+    data: {
       comments,
       currentPage: page,
       totalPages: pages,
       limit
-    }]
+    }
   });
 };
 

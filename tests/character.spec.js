@@ -101,7 +101,7 @@ describe('CHARACTER TEST', () => {
         .get(CHARACTERS_VALID_URL)
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.data[0]).to.have.keys(['movieCharacters', 'metadata']);
+          expect(response.body.data).to.have.keys(['movieCharacters', 'metadata']);
           done();
         });
     });
@@ -112,7 +112,7 @@ describe('CHARACTER TEST', () => {
         .query({ sort: 'name', filter: 'male' })
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.data[0]).to.have.keys(['movieCharacters', 'metadata']);
+          expect(response.body.data).to.have.keys(['movieCharacters', 'metadata']);
           done();
         });
     });
@@ -123,7 +123,7 @@ describe('CHARACTER TEST', () => {
         .query({ sort: 'gender', order: 'desc' })
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.data[0]).to.have.keys(['movieCharacters', 'metadata']);
+          expect(response.body.data).to.have.keys(['movieCharacters', 'metadata']);
           done();
         });
     });
@@ -134,7 +134,7 @@ describe('CHARACTER TEST', () => {
         .query({ sort: 'height', filter: 'feMALE' })
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.data[0]).to.have.keys(['movieCharacters', 'metadata']);
+          expect(response.body.data).to.have.keys(['movieCharacters', 'metadata']);
           done();
         });
     });

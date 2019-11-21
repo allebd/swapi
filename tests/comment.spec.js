@@ -116,7 +116,7 @@ describe('COMMENT TEST', () => {
         .get(COMMENT_VALID_URL)
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.data[0]).to.have.keys(['comments', 'currentPage', 'totalPages', 'limit']);
+          expect(response.body.data).to.have.keys(['comments', 'currentPage', 'totalPages', 'limit']);
           done();
         });
     });
@@ -215,10 +215,10 @@ describe('COMMENT TEST', () => {
         .get(COMMENT_VALID_URL)
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body).to.have.keys(['status', 'message', 'data']);
-          expect(response.body.data[0]).to.have.keys(['comments', 'currentPage', 'totalPages', 'limit']);
+          expect(response.body).to.have.keys(['message', 'data']);
+          expect(response.body.data).to.have.keys(['comments', 'currentPage', 'totalPages', 'limit']);
           expect(response.body.message).to.be.a('string');
-          expect(response.body.data).to.be.an('array');
+          expect(response.body.data).to.be.an('object');
           expect(response.body.message).to.equal('comments successfully retrieved');
           expect(response.body.data.length).to.not.equal(0);
           done();

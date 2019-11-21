@@ -133,8 +133,7 @@ const characterExtract = (characterResult) => (characterResult.map((character) =
  */
 const getTotalHeightInCm = (totalHeight, unit) => ({
   unit,
-  value: totalHeight,
-  text: `${totalHeight}${unit}`
+  value: totalHeight
 });
 
 /**
@@ -148,9 +147,8 @@ const getTotalHeightInFeetInches = (totalHeight, unit) => {
   const totalHeightInInches = (totalHeightInFeet % 1) * 12;
   return {
     unit,
-    value: totalHeightInFeet,
-    text: `${totalHeightInFeet}${unit}`,
-    fullText: `${Math.floor(totalHeightInFeet)}ft and ${totalHeightInInches.toFixed(2)} inches`
+    value: totalHeightInFeet.toFixed(2),
+    text: `${Math.floor(totalHeightInFeet)}ft and ${totalHeightInInches.toFixed(2)} inches`
   };
 };
 
@@ -172,5 +170,6 @@ export default {
   fetchCharacters,
   queryFilter,
   characterExtract,
-  getMetadata
+  getMetadata,
+  getTotalHeightInFeetInches
 };

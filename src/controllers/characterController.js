@@ -37,9 +37,8 @@ const getCharacters = async (request, response) => {
   const movieCharacters = characterExtract(charactersFilter);
   const metadata = getMetadata(movieCharacters);
   return responseHelper(response, 200, {
-    status: true,
     message: 'character successfully retrieved',
-    data: [{ movieCharacters, metadata }]
+    data: { movieCharacters, metadata }
   });
 };
 
